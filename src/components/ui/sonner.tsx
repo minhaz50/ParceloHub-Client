@@ -1,0 +1,27 @@
+"use client";
+
+import { Toaster as Sonner, type ToasterProps } from "sonner";
+import { useTheme } from "@/hooks/use-theme";
+
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { resolvedTheme } = useTheme();
+  return (
+    <Sonner
+      theme={resolvedTheme}
+      className="toaster group"
+      position="top-right"
+      richColors
+      closeButton
+      style={
+        {
+          "--normal-bg": "var(--popover)",
+          "--normal-text": "var(--popover-foreground)",
+          "--normal-border": "var(--border)",
+        } as React.CSSProperties
+      }
+      {...props}
+    />
+  );
+};
+
+export { Toaster };
