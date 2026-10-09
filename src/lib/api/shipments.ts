@@ -32,19 +32,29 @@ export interface CreateShipmentResult {
 }
 
 export const shipmentsApi = {
-  list: (token: string, params: { page: number; limit: number; status?: string }) =>
-    apiFetchPaginated<Shipment[]>("/shipments", { token, query: params }) as Promise<{
+  list: (
+    token: string,
+    params: { page: number; limit: number; status?: string },
+  ) =>
+    apiFetchPaginated<Shipment[]>("/shipments", {
+      token,
+      query: params,
+    }) as Promise<{
       data: Shipment[];
       meta: PaginationMeta;
     }>,
 
   search: (token: string, params: { q: string; page: number; limit: number }) =>
-    apiFetchPaginated<Shipment[]>("/shipments/search", { token, query: params }) as Promise<{
+    apiFetchPaginated<Shipment[]>("/shipments/search", {
+      token,
+      query: params,
+    }) as Promise<{
       data: Shipment[];
       meta: PaginationMeta;
     }>,
 
-  getById: (token: string, id: string) => apiFetch<Shipment>(`/shipments/${id}`, { token }),
+  getById: (token: string, id: string) =>
+    apiFetch<Shipment>(`/shipments/${id}`, { token }),
 
   track: (trackingId: string) =>
     apiFetch<{
@@ -56,14 +66,27 @@ export const shipmentsApi = {
       originHub: { name: string; address: string } | null;
       destinationHub: { name: string; address: string } | null;
       currentHub: { name: string } | null;
-      events: { status: string; note: string | null; location: string | null; createdAt: string }[];
+      events: {
+        status: string;
+        note: string | null;
+        location: string | null;
+        createdAt: string;
+      }[];
     }>(`/shipments/track/${trackingId}`),
 
   create: (token: string, payload: CreateShipmentPayload) =>
-    apiFetch<CreateShipmentResult>("/shipments", { method: "POST", token, body: JSON.stringify(payload) }),
+    apiFetch<CreateShipmentResult>("/shipments", {
+      method: "POST",
+      token,
+      body: JSON.stringify(payload),
+    }),
 
   schedulePickup: (token: string, id: string) =>
-    apiFetch<Shipment>(`/shipments/${id}/schedule-pickup`, { method: "PATCH", token, body: JSON.stringify({}) }),
+    apiFetch<Shipment>(`/shipments/${id}/schedule-pickup`, {
+      method: "PATCH",
+      token,
+      body: JSON.stringify({}),
+    }),
 
   cancel: (token: string, id: string, reason?: string) =>
     apiFetch<Shipment>(`/shipments/${id}/cancel`, {
@@ -75,8 +98,18 @@ export const shipmentsApi = {
   update: (
     token: string,
     id: string,
-    payload: { description?: string; declaredValue?: number; codAmount?: number },
-  ) => apiFetch<Shipment>(`/shipments/${id}`, { method: "PATCH", token, body: JSON.stringify(payload) }),
+    payload: {
+      description?: string;
+      declaredValue?: number;
+      codAmount?: number;
+    },
+  ) =>
+    apiFetch<Shipment>(`/shipments/${id}`, {
+      method: "PATCH",
+      token,
+      body: JSON.stringify(payload),
+    }),
 
-  remove: (token: string, id: string) => apiFetch<Shipment>(`/shipments/${id}`, { method: "DELETE", token }),
+  remove: (token: string, id: string) =>
+    apiFetch<Shipment>(`/shipments/${id}`, { method: "DELETE", token }),
 };
