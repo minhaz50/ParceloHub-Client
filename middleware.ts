@@ -3,18 +3,11 @@ import type { NextRequest } from "next/server";
 import { ROLE_COOKIE, ROLE_HOME, TOKEN_COOKIE } from "@/lib/constants";
 import type { Role } from "@/types";
 
-/**
- * This is a UX-level gate only — it reads a client-settable cookie, so
- * it cannot be trusted as the real security boundary (a cookie set by
- * JS in the browser can be forged). The backend's `auth(...roles)`
- * middleware, which re-validates the JWT and current DB role on every
- * request, is what actually enforces authorization. This middleware's
- * job is purely to avoid flashing a protected page's layout/shell to an
- * unauthenticated visitor before a client-side redirect would kick in,
- * and to bounce a logged-in user away from the wrong dashboard quickly.
- */
 const ROUTE_ROLE_MAP: { prefix: string; allowed: Role[] }[] = [
-  { prefix: "/admin", allowed: ["ADMIN", "SUPER_ADMIN", "OPS_MANAGER", "HUB_MANAGER"] },
+  {
+    prefix: "/admin",
+    allowed: ["ADMIN", "SUPER_ADMIN", "OPS_MANAGER", "HUB_MANAGER"],
+  },
   { prefix: "/dashboard", allowed: ["CUSTOMER"] },
   { prefix: "/provider", allowed: ["COURIER"] },
 ];
