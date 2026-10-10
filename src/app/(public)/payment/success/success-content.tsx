@@ -16,14 +16,13 @@ function PaymentSuccessContent() {
   const paymentId = searchParams.get("payment_id");
   const { accessToken, isHydrated } = useAuth();
 
-  // The webhook that marks this PAID fires asynchronously (Stripe calls
-  // our server directly, not via this redirect) — poll briefly in case
-  // it hasn't landed yet by the time the browser gets redirected back.
   const { data: payment, isLoading } = useQuery({
     queryKey: ["payments", paymentId],
-    queryFn: () => paymentsApi.getById(accessToken as string, paymentId as string),
+    queryFn: () =>
+      paymentsApi.getById(accessToken as string, paymentId as string),
     enabled: isHydrated && !!accessToken && !!paymentId,
-    refetchInterval: (query) => (query.state.data?.status === "PENDING" ? 2000 : false),
+    refetchInterval: (query) =>
+      query.state.data?.status === "PENDING" ? 2000 : false,
   });
 
   if (!paymentId) {
@@ -58,10 +57,14 @@ function PaymentSuccessContent() {
         action={
           payment.shipment ? (
             <Button asChild>
-              <Link href={`/dashboard/${payment.shipment.id}`}>View Shipment</Link>
+              <Link href={`/dashboard/${payment.shipment.id}`}>
+                View Shipment
+              </Link>
             </Button>
           ) : (
-            <Button asChild><Link href="/dashboard">Go to Dashboard</Link></Button>
+            <Button asChild>
+              <Link href="/dashboard">Go to Dashboard</Link>
+            </Button>
           )
         }
       />
@@ -74,7 +77,11 @@ function PaymentSuccessContent() {
       iconClass="animate-spin text-muted-foreground"
       title="Still confirming..."
       description="Stripe hasn't notified us yet — this page will update automatically once it does. You can also check Payment History in your dashboard."
-      action={<Button asChild variant="outline"><Link href="/dashboard/payments">Payment History</Link></Button>}
+      action={
+        <Button asChild variant="outline">
+          <Link href="/dashboard/payments">Payment History</Link>
+        </Button>
+      }
     />
   );
 }

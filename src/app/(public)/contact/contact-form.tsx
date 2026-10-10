@@ -27,13 +27,6 @@ const contactSchema = z.object({
 });
 type ContactFormValues = z.infer<typeof contactSchema>;
 
-/**
- * There's no backend endpoint for contact submissions (it isn't a core
- * platform workflow), so rather than fake a "message sent" toast that
- * implies server-side persistence that doesn't exist, this genuinely
- * opens the visitor's email client with the message pre-filled — a real
- * action, not a simulated one.
- */
 export function ContactForm() {
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
